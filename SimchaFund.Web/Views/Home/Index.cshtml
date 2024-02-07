@@ -1,0 +1,68 @@
+﻿@model SimchasViewModel
+@using SimchaFund.Data;
+
+<div>
+    <h3>Simchas</h3>
+</div>
+<div>
+    <button id="addsimcha" class="btn btn-danger">New Simcha</button>
+</div>
+
+<div class="col-md-12">
+    <table class="table table-bordered table-hover table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Contribute</th>
+                <th>Simcha Name</th>
+                <th>Contributor Count</th>
+                <th>Total</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var simcha in Model.Simchas)
+            {
+                <tr>
+                    <td>
+                        <button class="btn btn-primary">Contribute</button>
+                    </td>
+                    <td>@simcha.Name</td>
+                    <td>@Model.ContributorCount / @Model.ContributorCountTotal</td>
+                    <td>@Model.Total.ToString("C")</td>
+                    <td>@simcha.Date.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div id="simcha-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="/home/addsimcha">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Simcha</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="bg-light p-5 rounded-3">
+                        <div class="col-md-12">
+                            <label for="simchaname">Simcha Name</label>
+                            <input id="simchaname" type="text" name="name" placeholder="Simcha Name" class="form-control" />
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <label for="simchadate">Date</label>
+                            <input id="simchadate" type="date" name="date" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/simchafund.js" asp-append-version="true"></script>
+}

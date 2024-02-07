@@ -1,0 +1,75 @@
+﻿@model ContributorsViewModel
+@using SimchaFund.Data;
+
+<div>
+    <h3>Contributors</h3>
+</div>
+<div>
+    <button id="addcontributor" class="btn btn-danger">New Contributor</button>
+</div>
+
+<div class="col-md-12">
+    <table id="deposittable" class="table table-bordered table-hover table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Deposit</th>
+                <th>Name</th>
+                <th>Cell</th>
+                <th>Balance</th>
+                <th>Always Include</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contributor in Model.Contributors)
+            {
+                <tr>
+                    <td>
+                        <button value="@contributor.Id" class="btn btn-success">Deposit</button>
+                    </td>
+                    <td>@contributor.Name</td>
+                    <td>@contributor.Cell</td>
+                    <td></td
+                    <td>
+                        @if (contributor.AlwaysInclude)
+                        {
+                            <i class="bi bi-check" style="font-size: 2rem;"></i>
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div id="deposit-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action=/home/makedeposit>
+                <div class="modal-header">
+                    <h5 class="modal-title">Deposit for </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="bg-light p-5 rounded-3">
+                        <div class="col-md-12">
+                            <label for="depositamount">Amount</label>
+                            <input id="depositamount" type="text" name="amount" placeholder="Deposit Amount" class="form-control" />
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <label for="depositdate">Date</label>
+                            <input id="depositdate" type="date" name="date" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button name="contributorId" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/simchafund.js" asp-append-version="true"></script>
+}
