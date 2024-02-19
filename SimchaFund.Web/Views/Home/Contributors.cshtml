@@ -4,12 +4,22 @@
 <div>
     <h3>Contributors</h3>
 </div>
-<div>
-    <button id="addcontributor" class="btn btn-danger">New Contributor</button>
+<div class="row">
+    <form action="/home/contributors">
+        <div class="col-md-6">
+        <button type="button" id="addcontributor" class="btn btn-danger">New Contributor</button>
+        <input class="offset-1" type="text" id="myInput" onkeyup="Search()" placeholder="Search..." />
+        <button id="clear" class="btn btn-danger">Clear</button>
+        </div>
+        <div class="col-md-6">
+        <h4 >Total: @Model.TotalBalance.ToString("C")</h4>
+        </div>
+    </form>
 </div>
 
+@*Contributors Table*@
 <div class="col-md-12">
-    <table id="deposittable" class="table table-bordered table-hover table-striped mt-3">
+    <table id="myTable" class="table table-bordered table-hover table-striped mt-3">
         <thead>
             <tr>
                 <th>Deposit</th>
@@ -25,29 +35,36 @@
             {
                 <tr>
                     <td>
-                        <button value="@contributor.Id" class="btn btn-success">Deposit</button>
+                        <button data-name="@contributor.FirstName @contributor.LastName" data-id="@contributor.Id" class="btn btn-success">Deposit</button>
                     </td>
-                    <td>@contributor.Name</td>
+                    <td>@contributor.LastName @contributor.FirstName</td>
                     <td>@contributor.Cell</td>
-                    <td></td
+                    <td>@contributor.Balance.ToString("C")</td>
                     <td>
                         @if (contributor.AlwaysInclude)
                         {
                             <i class="bi bi-check" style="font-size: 2rem;"></i>
                         }
                     </td>
-                    <td></td>
+                    <td>
+                        <form action="/home/showhistory">
+                            <button id="showhistory" name="contributorId" data-contributor-id="@contributor.Id" class="btn btn-primary">Show History</button>
+                            <button type="button" id="editcontributor" data-id="@contributor.Id" data-firstname="@contributor.FirstName" data-lastname="@contributor.LastName" data-cell="@contributor.Cell" data-alwaysinclude="@contributor.AlwaysInclude" class="btn btn-danger">Edit</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+@*Deposit Modal*@
 <div id="deposit-modal" class="modal fade" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="post" action=/home/makedeposit>
                 <div class="modal-header">
-                    <h5 class="modal-title">Deposit for </h5>
+                    <h5 id="modaltitle" class="modal-title">Deposit for </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -70,6 +87,73 @@
         </div>
     </div>
 </div>
+@*New Contributor Modal*@
+<div id="addcontributor-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action=/home/addcontributor>
+                <div class="modal-header">
+                    <h5 id="modaltitle" class="modal-title">New Contributor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-8">
+                        <label for="firstname">First Name</label>
+                        <input id="firstname" type="text" name="firstname" placeholder="First Name" class="form-control" />
+                        <label for="lasstname">Last Name</label>
+                        <input id="lastname" type="text" name="lastname" placeholder="Last Name" class="form-control" />
+                    </div>
+                    <div class="col-md-8 mt-3">
+                        <label for="cellnumber">Cell Number</label>
+                        <input id="cellnumber" type="text" name="cell" placeholder="Cell Number" class="form-control" />
+                    </div>
+                    <div class="col-md-8 mt-3">
+                        <input id="includedcheckbox" type="checkbox" value="true" name="alwaysinclude" />
+                        <label for="includedcheckbox">Always Include</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="savecontributor" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*Edit Contributor Modal*@
+<div id="editcontributor-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action=/home/editcontributor>
+                <div class="modal-header">
+                    <h5 id="modaltitle" class="modal-title">Edit Contributor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-8">
+                        <label for="firstname">First Name</label>
+                        <input id="firstname" type="text" name="firstname" class="form-control" />
+                        <label for="lasstname">Last Name</label>
+                        <input id="lastname" type="text" name="lastname" class="form-control" />
+                    </div>
+                    <div class="col-md-8 mt-3">
+                        <label for="cellnumber">Cell Number</label>
+                        <input id="cellnumber" type="text" name="cell" class="form-control" />
+                    </div>
+                    <div class="col-md-8 mt-3">
+                        <input id="includedcheckbox" type="checkbox" value="false" name="alwaysinclude" />
+                        <label for="includedcheckbox">Always Include</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="contributorId" name="contributorId" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script src="~/js/simchafund.js" asp-append-version="true"></script>
 }

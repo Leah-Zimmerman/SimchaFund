@@ -24,11 +24,13 @@
             {
                 <tr>
                     <td>
-                        <button class="btn btn-primary">Contribute</button>
+                        <form action="/home/contribute">
+                            <button id="contributions" name="simchaId" data-simcha-id="@simcha.Id" class="btn btn-primary">Contribute</button>
+                        </form>
                     </td>
                     <td>@simcha.Name</td>
-                    <td>@Model.ContributorCount / @Model.ContributorCountTotal</td>
-                    <td>@Model.Total.ToString("C")</td>
+                    <td>@simcha.ContributorCount / @Model.ContributorCountTotal</td>
+                    <td>@simcha.Total.ToString("C")</td>
                     <td>@simcha.Date.ToShortDateString()</td>
                 </tr>
             }

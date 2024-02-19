@@ -1,0 +1,53 @@
+﻿@model SimchasViewModel
+@using SimchaFund.Data;
+
+<div>
+    <h3>Contributors for the @Model.SimchaName Simcha</h3>
+</div>
+
+<form action="/home/updatecontributions">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Contribute</th>
+                    <th>Name</th>
+                    <th>Balance</th>
+                    <th>Always Include</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.SimchaContributors)
+                {
+                    <tr class="d-table-row">
+                        <td data-contribute=@c.Contribute>
+                            <div class="form-check form-switch offset-md-4">
+                                <input class="form-check-input" name="contributorRows[0].Contribute" type="checkbox" value="false" id="contribute" style="font-size: 2rem;" checked="@(c.Contribute == true ? true : false)">
+                                <input type="hidden" name="contributorRows[0].ContributorId" value="@c.Id" />
+                            </div>
+                        </td>
+                        <td>@c.LastName @c.FirstName</td>
+                        <td>@c.Balance.ToString("C")</td>
+                        <td>
+                            @if (c.AlwaysInclude)
+                            {
+                                <i class="bi bi-check" style="font-size: 2rem;"></i>
+                            }
+                        </td>
+                        <td data-amount="@c.Amount">
+                            <input name="contributorRows[0].Amount" id="amount" type="text" value="@(c.Contribute==true?c.Amount:"5")" class="form-control" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="offset-md-5">
+            <button data-simchaid="@Model.SimchaId" value="@Model.SimchaId" name="simchaId" id="update" class="btn btn-danger">Update</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/simchafund.js" asp-append-version="true"></script>
+}

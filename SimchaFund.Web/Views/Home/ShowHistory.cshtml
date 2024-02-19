@@ -1,0 +1,44 @@
+﻿@model SimchasViewModel
+@using SimchaFund.Data;
+
+<div>
+    <h2>History For @Model.FullName</h2>
+</div>
+<div>
+    <h4>Current Balance: @Model.Balance.ToString("C")</h4>
+</div>
+
+<div class="col-md-12">
+    <table class="table table-bordered table-hover table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Action</th>
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.Deposits)
+            {
+                <tr>
+                    <td>Deposit</td>
+                    <td>@d.Date.ToShortDateString()</td>
+                    <td>@d.Amount.ToString("C")</td>
+                </tr>
+            }
+            @foreach (var c in Model.Contributions)
+            {
+                <tr>
+                    <td>Contribution for @c.SimchaName</td>
+                    <td>@c.Date.ToShortDateString()</td>
+                    <td>-@c.Amount.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="offset-md-5">
+    <form action="/home/contributors">
+    <button class="btn btn-danger">Back to Contributors</button>
+    </form>
+</div>
